@@ -140,6 +140,7 @@ if(typeof two != "undefined")
 //gasUsed
 //amount
 
+   var pitch = Math.max(40, 200 - size);
 
 
   if(tx.recipient == "0xa4ec8e283de9c77510cfedfa15719fb64b1cd9de")
@@ -148,7 +149,9 @@ if(typeof two != "undefined")
     var color = "#000";
     if(!muted)
     {
-        sfx.coin()
+
+          //play a middle 'C' for the duration of an 8th note
+          synth.triggerAttackRelease(pitch, "8n");
     }
 
   }else{
@@ -157,7 +160,9 @@ if(typeof two != "undefined")
 
     if(!muted)
     {
-        sfx.tiny()
+
+          //play a middle 'C' for the duration of an 8th note
+          synth.triggerAttackRelease(pitch, "8n");
     }
 
 
@@ -258,8 +263,7 @@ function toggleMute()
 var circlegroup;
 var falling_height = 0;
 
-var sfx ;
-
+var synth;
 
 $(document).ready(function(){
 
@@ -280,7 +284,7 @@ $(document).ready(function(){
 
 
     setInterval(function(){   pollTransactions()   }, 5000);
-    setInterval(function(){   renderTransactions()   }, 25);
+    setInterval(function(){   renderTransactions()   }, 30);
 
     var framecount = 1;
     two.bind('update', function(framecount) {
@@ -305,9 +309,38 @@ $(document).ready(function(){
     }).play();  // Finally, start the animation loop
 
 
+    //create a synth and connect it to the master output (your speakers)
+      synth = new Tone.Synth().toMaster();
 
-    var library = {"simple":{"Frequency":{"Start":937.3952196773203,"Min":246.35718983774473,"Slide":-0.8024567088280853},"Generator":{"Func":"sine","A":0.4821820657155865,"ASlide":0.08279595272417106},"Volume":{"Sustain":0.26649676262701294,"Decay":0.2266347238393018}},"coin":{"Frequency":{"Start":1362.0204816493952,"ChangeSpeed":0.14504706473599208,"ChangeAmount":10.654721077993328},"Volume":{"Sustain":0.0191136253611655,"Decay":0.31579941914330545,"Punch":0.4551836224273207}},"tiny":{"Frequency":{"Start":1482.158618837902,"Min":700.3125673232661,"Slide":-0.9337395871742468},"Generator":{"Func":"sine","A":0.023075868363643726,"ASlide":0.09614367718647561},"Phaser":{"Offset":0.14958106085836845,"Sweep":0.1613417939353254},"Volume":{"Sustain":0.18283469595997254,"Decay":0.2269495180354423}}};
-      sfx = jsfx.Sounds(library);
+
+      var synthA = new Tone.Synth({
+        	oscillator : {
+          	type : 'fmsquare',
+            modulationType : 'sawtooth',
+            modulationIndex : 3,
+            harmonicity: 3.4
+          },
+          envelope : {
+          	attack : 0.001,
+            decay : 0.1,
+            sustain: 0.1,
+            release: 0.1
+          }
+        }).toMaster()
+
+        var synthB = new Tone.Synth({
+        	oscillator : {
+          	type : 'triangle8'
+          },
+          envelope : {
+          	attack : 2,
+            decay : 1,
+            sustain: 0.4,
+            release: 4
+          }
+        }).toMaster()
+
+
 
 
 })
