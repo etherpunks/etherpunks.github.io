@@ -5,12 +5,12 @@ body{
 
 .audio-editor
 {
- 
+
   position:absolute;
   top:105px;
   left:5px;
   padding:2px;
-  font-size:32px;
+  font-size:22px;
   z-index: 1000;
 }
 

@@ -468,14 +468,15 @@ $(document).ready(function(){
         beep.volume.value = data.value*20 -50;
       });
 
+
       attackslider.on('*', function(data) {
-        beep.envelope.attack = data.value * 4;
-        beep.filterEnvelope.attack = data.value * 4;
+        beep.envelope.attack = data.value * 1;
+        beep.filterEnvelope.attack = data.value * 1;
       });
 
       decayslider.on('*', function(data) {
-        beep.envelope.decay = data.value * 4;
-        beep.filterEnvelope.decay = data.value * 4;
+        beep.envelope.decay = data.value * 1;
+        beep.filterEnvelope.decay = data.value * 1;
       });
 
       sustainslider.on('*', function(data) {
@@ -488,6 +489,7 @@ $(document).ready(function(){
         beep.filterEnvelope.release = data.value * 14.0;
       });
 
+      /*
       filterfreqslider.on('*', function(data) {
         beep.filter.frequency.value = data.value * 20000;
         console.log('moved slider ')
@@ -497,25 +499,28 @@ $(document).ready(function(){
       filterqslider.on('*', function(data) {
         beep.filter.Q.value = data.value * 10;
       });
+      */
+
 
       attackslider.set({
-        value: 0.1,
+        value: 0.05,
       }, true);
       decayslider.set({
-        value: 0.1,
+        value: 0.05,
       }, true);
+
       sustainslider.set({
         value: .05,
       }, true);
       releaseslider.set({
-        value: 0.4,
+        value: 0.2,
       }, true);
-
+      /*
       filterfreqslider.set({
         value: .2,
       }, true);
       filterqslider.set({
         value: 0.5,
       }, true);
-
+      */
     }
