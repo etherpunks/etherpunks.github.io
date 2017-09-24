@@ -81,70 +81,6 @@ function pollTransactions()
     console.log('api failed -- resetting')
   }
   })
-  /*.success(function( response ) {
-
-      tx_offset+=100;
-      number_of_tx_added_this_poll = 0;
-
-
-      console.log('read ')
-
-          let tx_list = response.data;
-
-            for (var i=0; i < tx_list.length; i++ )
-            {
-              let tx = response.data[i];
-
-              let hash = tx.hash;
-
-              let blockId = tx.block_id;
-
-              if(latestBlockId < blockId)
-              {
-                latestBlockId = blockId;
-              }
-
-              //ethTransactions[hash] = tx;
-
-              if( !ethHashesRead.includes(hash))
-              {
-                ethHashesRead.push(hash)
-
-                ethTransactions.push(tx)
-
-                  //console.log(hash)
-
-                  number_of_tx_added_this_poll++;
-              }
-
-            }
-
-
-            //if no transactions from this block were found then reset our offset
-            if(number_of_tx_added_this_poll  == 0)
-            {
-              //reset tx_offset
-              tx_offset = 0;
-
-            }
-
-            $(".debug-info").html(tx_offset)
-
-
-    //  let tx_data = JSON.parse(html)
-      //    console.log(tx_data)
-
-
-
-
-    }).error(function( XMLHttpRequest, textStatus, errorThrown ) {
-        //reset tx_offset
-        tx_offset = 0;
-        console.log('api failed -- resetting')
-      });
-
-*/
-
 
 
 
@@ -195,7 +131,6 @@ function renderTransaction(tx)
 if(typeof two != "undefined")
 {
 
-  console.log(tx)
 
 
      var hash_beginning = tx.hash.substring(2,8)
@@ -229,7 +164,9 @@ if(typeof two != "undefined")
 
     if(!muted)
     {
-
+        //beep.triggerRelease();
+        //beep.triggerAttackRelease(pitch, 4);
+      plucky.triggerRelease();
       plucky.triggerAttackRelease(pitch, 4);
 
           if(  (new Date().getMilliseconds()-timeOfLastSound) > timeBetweenSounds)
@@ -252,7 +189,7 @@ if(typeof two != "undefined")
   circle.fill = color;
   circle.data = tx.hash;
 
-  console.log(circle.id)
+
 
   //circlegroup.add(circle);
 
@@ -274,26 +211,6 @@ if(typeof two != "undefined")
 
 
 }
-
-/*
-  // Make an instance of two and place it on the page.
- var elem = document.getElementById('two-container');
- var params = { width: 285, height: 200 };
- var two = new Two(params).appendTo(elem);
-
- // two has convenience methods to create shapes.
- var rect = two.makeRectangle(213, 100, 100, 100);
-
-
- rect.fill = 'rgb(0, 200, 255)';
- rect.opacity = 0.75;
- rect.noStroke();
-
- // Don't forget to tell two to render everything
- // to the screen
- two.update();
-
-*/
 
 }
 
@@ -347,6 +264,7 @@ var bell;
 var drum;
 var bassPart;
 var plucky;
+var beep;
 
 $(document).ready(function(){
 
@@ -367,7 +285,7 @@ $(document).ready(function(){
 
 
     setInterval(function(){   pollTransactions()   }, 5000);
-    setInterval(function(){   renderTransactions()   }, 60);
+    setInterval(function(){   renderTransactions()   }, 30);
 
     var framecount = 1;
     two.bind('update', function(framecount) {
@@ -453,50 +371,13 @@ $(document).ready(function(){
 
 
 
-/*
 
-      piano = new Tone.Sampler({
-    			'A0' : 'A0.[mp3|ogg]',
-    			'C1' : 'C1.[mp3|ogg]',
-    			'D#1' : 'Ds1.[mp3|ogg]',
-    			'F#1' : 'Fs1.[mp3|ogg]',
-    			'A1' : 'A1.[mp3|ogg]',
-    			'C2' : 'C2.[mp3|ogg]',
-    			'D#2' : 'Ds2.[mp3|ogg]',
-    			'F#2' : 'Fs2.[mp3|ogg]',
-    			'A2' : 'A2.[mp3|ogg]',
-    			'C3' : 'C3.[mp3|ogg]',
-    			'D#3' : 'Ds3.[mp3|ogg]',
-    			'F#3' : 'Fs3.[mp3|ogg]',
-    			'A3' : 'A3.[mp3|ogg]',
-    			'C4' : 'C4.[mp3|ogg]',
-    			'D#4' : 'Ds4.[mp3|ogg]',
-    			'F#4' : 'Fs4.[mp3|ogg]',
-    			'A4' : 'A4.[mp3|ogg]',
-    			'C5' : 'C5.[mp3|ogg]',
-    			'D#5' : 'Ds5.[mp3|ogg]',
-    			'F#5' : 'Fs5.[mp3|ogg]',
-    			'A5' : 'A5.[mp3|ogg]',
-    			'C6' : 'C6.[mp3|ogg]',
-    			'D#6' : 'Ds6.[mp3|ogg]',
-    			'F#6' : 'Fs6.[mp3|ogg]',
-    			'A6' : 'A6.[mp3|ogg]',
-    			'C7' : 'C7.[mp3|ogg]',
-    			'D#7' : 'Ds7.[mp3|ogg]',
-    			'F#7' : 'Fs7.[mp3|ogg]',
-    			'A7' : 'A7.[mp3|ogg]',
-    			'C8' : 'C8.[mp3|ogg]'
-    		}, {
-    			'release' : 1,
-    			'baseUrl' : './audio/salamander/'
-    		}).toMaster();
 
-        piano.volume.value = -6;
-*/
+
 
           plucky = new Tone.PluckSynth(
           {
-      			"resonance" :0.9,
+      			"resonance" :1,
             "envelope" : {
               "attack" : 0.1,
             	"decay" : 0.2,
@@ -506,7 +387,6 @@ $(document).ready(function(){
             "volume" : -15
           }
         ).toMaster();
-      plucky.triggerAttackRelease(200, 4);
 
 
         bell = new Tone.MetalSynth({
@@ -561,3 +441,77 @@ $(document).ready(function(){
 
 
 })
+
+
+
+    // ********* Tone.js stuff
+
+     beep = new Tone.MonoSynth().toMaster();
+    beep.volume.value = -20;
+
+    // ********* NexusUI stuff
+
+    nx.onload = function() {
+
+    /*  monokeyboard.on('*', function(data) {
+        if (data.on)
+        {
+          beep.triggerAttack(nx.mtof(data.note));
+        }
+        else
+        {
+          beep.triggerRelease();
+        }
+      });*/
+
+      attackslider.on('*', function(data) {
+        beep.envelope.attack = data.value * 4;
+        beep.filterEnvelope.attack = data.value * 4;
+      });
+
+      decayslider.on('*', function(data) {
+        beep.envelope.decay = data.value * 4;
+        beep.filterEnvelope.decay = data.value * 4;
+      });
+
+      sustainslider.on('*', function(data) {
+        beep.envelope.sustain = data.value;
+        beep.filterEnvelope.sustain = data.value;
+      });
+
+      releaseslider.on('*', function(data) {
+        beep.envelope.release = data.value * 14.0;
+        beep.filterEnvelope.release = data.value * 14.0;
+      });
+
+      filterfreqslider.on('*', function(data) {
+        beep.filter.frequency.value = data.value * 20000;
+        console.log('moved slider ')
+        console.log(beep.filter.frequency.value)
+      });
+
+      filterqslider.on('*', function(data) {
+        beep.filter.Q.value = data.value * 10;
+      });
+
+      attackslider.set({
+        value: 0.02,
+      }, true);
+      decayslider.set({
+        value: 0.2,
+      }, true);
+      sustainslider.set({
+        value: .5,
+      }, true);
+      releaseslider.set({
+        value: 0.4,
+      }, true);
+
+      filterfreqslider.set({
+        value: .5,
+      }, true);
+      filterqslider.set({
+        value: 0.2,
+      }, true);
+
+    }

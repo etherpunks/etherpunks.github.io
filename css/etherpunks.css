@@ -3,6 +3,17 @@ body{
 }
 
 
+.audio-editor
+{
+  display:none;
+  position:absolute;
+  top:105px;
+  left:5px;
+  padding:2px;
+  font-size:32px;
+  z-index: 1000;
+}
+
   .mute-button
   {
     position:absolute;

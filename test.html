@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Instruments - Monosynth - Tone.js & NexusUI</title>
+
+	<script type="text/javascript" src="js/tone.min.js"></script>
+	<script type="text/javascript" src="js/nexusUI.min.js"></script>
+
+	<script type="text/javascript">
+
+		// ********* Tone.js stuff
+
+		var beep = new Tone.MonoSynth().toMaster();
+		beep.volume.value = -20;
+
+		// ********* NexusUI stuff
+
+		nx.onload = function() {
+
+			monokeyboard.on('*', function(data) {
+				if (data.on)
+				{
+					beep.triggerAttack(nx.mtof(data.note));
+				}
+				else
+				{
+					beep.triggerRelease();
+				}
+			});
+
+			attackslider.on('*', function(data) {
+				beep.envelope.attack = data.value * 4;
+				beep.filterEnvelope.attack = data.value * 4;
+			});
+
+			decayslider.on('*', function(data) {
+				beep.envelope.decay = data.value * 4;
+				beep.filterEnvelope.decay = data.value * 4;
+			});
+
+			sustainslider.on('*', function(data) {
+				beep.envelope.sustain = data.value;
+				beep.filterEnvelope.sustain = data.value;
+			});
+
+			releaseslider.on('*', function(data) {
+				beep.envelope.release = data.value * 14.0;
+				beep.filterEnvelope.release = data.value * 14.0;
+			});
+
+			filterfreqslider.on('*', function(data) {
+				beep.filter.frequency.value = data.value * 20000;
+			});
+
+			filterqslider.on('*', function(data) {
+				beep.filter.Q.value = data.value * 10;
+			});
+
+			attackslider.set({
+				value: 0.02,
+			}, true);
+			decayslider.set({
+				value: 0.2,
+			}, true);
+			sustainslider.set({
+				value: .5,
+			}, true);
+			releaseslider.set({
+				value: 0.4,
+			}, true);
+
+			filterfreqslider.set({
+				value: .5,
+			}, true);
+			filterqslider.set({
+				value: 0.2,
+			}, true);
+
+		}
+
+</script>
+
+</head>
+<body>
+
+<h3>Instruments - MonoSynth</h3>
+
+<div id="keyboard">
+	<canvas nx="keyboard" id="monokeyboard"></canvas>
+</div>
+<br />
+<div id="envelope">
+	Envelope ADSR<br />
+	<canvas nx="slider" id="attackslider"></canvas>
+	<canvas nx="slider" id="decayslider"></canvas>
+	<canvas nx="slider" id="sustainslider"></canvas>
+	<canvas nx="slider" id="releaseslider"></canvas>
+</div>
+<br />
+<div id="envelope">
+	Filter Frequency and Q<br />
+	<canvas nx="slider" id="filterfreqslider" style="width:140px; height:30px"></canvas><br />
+	<canvas nx="slider" id="filterqslider" style="width:140px; height:30px"></canvas>
+</div>
+
+
+
+</body>
+</html>

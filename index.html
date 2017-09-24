@@ -13,6 +13,8 @@
       <script src="./js/tone.min.js"></script>
 
       <script src="./js/two.min.js"></script>
+      <script type="text/javascript" src="js/nexusUI.min.js"></script>
+
 
         <link rel="stylesheet" type="text/css" href="./css/etherpunks.css">
         <script src="./js/etherpunks.js"></script>
@@ -52,6 +54,23 @@
 
       <div class="mute-button" onclick="toggleMute()">
           <i class="fa fa-volume-up mute-icon"></i>
+      </div>
+
+
+      <div class="audio-editor">
+        <div id="envelope">
+        	Envelope ADSR<br />
+        	<canvas nx="slider" id="attackslider"></canvas>
+        	<canvas nx="slider" id="decayslider"></canvas>
+        	<canvas nx="slider" id="sustainslider"></canvas>
+        	<canvas nx="slider" id="releaseslider"></canvas>
+        </div>
+        <br />
+        <div id="envelope">
+        	Filter Frequency and Q<br />
+        	<canvas nx="slider" id="filterfreqslider" style="width:140px; height:30px"></canvas><br />
+        	<canvas nx="slider" id="filterqslider" style="width:140px; height:30px"></canvas>
+        </div>
       </div>
 
       <div id="main"></div>
