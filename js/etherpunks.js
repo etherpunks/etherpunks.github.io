@@ -306,7 +306,7 @@ $(document).ready(function(){
 
       for(var i=0;i< circles.length; i++)
       {
-         circles[i].translation.set( circles[i].translation._x  , circles[i].translation._y + 0.2 );
+         circles[i].translation.set( circles[i].translation._x  , circles[i].translation._y + 0.2 + (0.1 * Math.random()) );
       }
 
 
