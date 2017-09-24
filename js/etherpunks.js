@@ -98,8 +98,12 @@ function renderTransactions()
     return;
   }
 
+  if(latestBlockId > 0 )
+  {
 
-  $(".latest-block-id").html(latestBlockId)
+    $(".latest-block-id").html(latestBlockId)
+  }
+
   $(".tx-queue-length").html(ethTransactions.length)
   //   ethTransactions.push(tx)
 
@@ -127,37 +131,49 @@ function renderTransaction(tx)
 if(typeof two != "undefined")
 {
 
-
+  console.log(tx)
 
   var x = Math.random() * two.width;
   var y = 10;
-  var size = Math.sqrt(tx.amount / 100000000000000000);
+  var size = 4 +  Math.sqrt(tx.amount / 100000000000000000);
 
 //gasUsed
 //amount
 
 
-  console.log(tx)
 
-  var circle = two.makeCircle(x,y,size);
+  if(tx.recipient == "0xa4ec8e283de9c77510cfedfa15719fb64b1cd9de")
+  {
+    var circle = two.makeStar(x,y,size*2,size*4,5);
+    var color = "#000";
+  }else{
+    var circle = two.makeCircle(x,y,size);
+    var color = randomColor();
+  }
 
-  var color = randomColor();
+
 
   circle.fill = color;
+  circle.data = tx.hash;
+
+  console.log(circle.id)
 
   //circlegroup.add(circle);
 
   while(circles.length >= 500)
   {
       var removed_circle = circles.pop(circle)
+      two.remove(removed_circle);
   }
 
     circles.push(circle)
 
 
-  two.update();
+    two.update();
 
+    $(circle._renderer.elem).data('hash', tx.hash)
 
+    circle._renderer.elem.addEventListener('click', clickTXhandler, false);
 
 
 
@@ -184,6 +200,33 @@ if(typeof two != "undefined")
 */
 
 }
+
+function clickTXhandler(elem)
+{
+
+  var target = elem.target;
+
+
+ var target_node = elem.srcElement;
+
+ clickedTxWithHash($(target_node).data('hash'))
+
+
+
+}
+
+function clickedTxWithHash(hash)
+{
+
+  var hash_start = hash.substring(0,14) + ".."
+  $(".selectedTxInfo").html(hash_start);
+  $(".selectedTxInfoLink").attr("href","http://etherscan.io/tx/"+hash)
+
+
+ 
+
+}
+
 
 
 var circlegroup;
@@ -224,8 +267,7 @@ $(document).ready(function(){
 
       for(var i=0;i< circles.length; i++)
       {
-        console.log(  circles[i].translation._x )
-        circles[i].translation.set( circles[i].translation._x  , circles[i].translation._y + 1 );
+         circles[i].translation.set( circles[i].translation._x  , circles[i].translation._y + 0.2 );
       }
 
 
