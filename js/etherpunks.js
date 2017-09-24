@@ -15,6 +15,9 @@ var muted = false;
 var two;
 
 
+var timeOfLastSound = 0;
+var timeBetweenSounds = 200;
+
 function pollTransactions()
 {
 
@@ -166,8 +169,18 @@ if(typeof two != "undefined")
     if(!muted)
     {
 
+      plucky.triggerAttackRelease(pitch, 4);
+
+          if(  (new Date().getMilliseconds()-timeOfLastSound) > timeBetweenSounds)
+          {
+
           //play a middle 'C' for the duration of an 8th note
-          plucky.triggerAttackRelease(pitch, "8n");
+
+            timeOfLastSound =   new Date().getMilliseconds()
+          }
+
+
+
     }
 
 
@@ -293,7 +306,7 @@ $(document).ready(function(){
 
 
     setInterval(function(){   pollTransactions()   }, 5000);
-    setInterval(function(){   renderTransactions()   }, 30);
+    setInterval(function(){   renderTransactions()   }, 60);
 
     var framecount = 1;
     two.bind('update', function(framecount) {
@@ -379,7 +392,7 @@ $(document).ready(function(){
 
 
 
-
+/*
 
       piano = new Tone.Sampler({
     			'A0' : 'A0.[mp3|ogg]',
@@ -418,17 +431,21 @@ $(document).ready(function(){
     		}).toMaster();
 
         piano.volume.value = -6;
+*/
 
           plucky = new Tone.PluckSynth(
           {
-      			"resonance" : 800,
+      			"resonance" :0.8,
             "envelope" : {
-      				"decay" : 0.4,
+              "attack" : 0.1,
+            	"decay" : 0.2,
+            	"sustain" : 0.3,
+            	"release" : 0.4,
       			},
             "volume" : -15
           }
         ).toMaster();
-      //  plucky.triggerAttack("C4");
+      plucky.triggerAttackRelease(200, 4);
 
 
         bell = new Tone.MetalSynth({
