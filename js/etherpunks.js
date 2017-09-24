@@ -315,7 +315,7 @@ $(document).ready(function(){
 
 
     //create a synth and connect it to the master output (your speakers)
-      synth = new Tone.Synth().toMaster();
+      synth = new Tone.Synth({volume: -10}).toMaster();
 
 
       var synthA = new Tone.Synth({
