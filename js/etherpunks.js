@@ -167,7 +167,7 @@ if(typeof two != "undefined")
     {
 
           //play a middle 'C' for the duration of an 8th note
-          piano.triggerAttackRelease('A3', "8n");
+          plucky.triggerAttackRelease(pitch, "8n");
     }
 
 
@@ -272,7 +272,7 @@ var synth;
 var bell;
 var drum;
 var bassPart;
-var synthL;
+var plucky;
 
 $(document).ready(function(){
 
@@ -378,37 +378,6 @@ $(document).ready(function(){
 		}).toMaster();
 
 
-    var merge = new Tone.Merge();
-		//a little reverb
-		var reverb = new Tone.Freeverb({
-			"roomSize" : 0.2,
-			"wet" : 0.3
-		});
-		merge.chain(reverb, Tone.Master);
-		//the synth settings
-		var synthSettings = {
-			"oscillator": {
-				"detune": 0,
-				"type": "custom",
-				"partials" : [2, 1, 2, 2],
-				"phase": 0,
-				"volume": 0
-			},
-			"envelope": {
-				"attack": 0.005,
-				"decay": 0.3,
-				"sustain": 0.2,
-				"release": 1,
-			},
-			"portamento": 0.01,
-			"volume": -10
-		};
-		//left and right synthesizers
-		  synthL = new Tone.Synth(synthSettings).connect(merge.left);
-		  synthR = new Tone.Synth(synthSettings).connect(merge.right);
-
-
-
 
 
 
@@ -447,6 +416,19 @@ $(document).ready(function(){
     			'release' : 1,
     			'baseUrl' : './audio/salamander/'
     		}).toMaster();
+
+        piano.volume.value = -6;
+
+          plucky = new Tone.PluckSynth(
+          {
+      			"resonance" : 800,
+            "envelope" : {
+      				"decay" : 0.4,
+      			},
+            "volume" : -15
+          }
+        ).toMaster();
+      //  plucky.triggerAttack("C4");
 
 
         bell = new Tone.MetalSynth({
