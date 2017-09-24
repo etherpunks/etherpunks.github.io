@@ -156,7 +156,7 @@ if(typeof two != "undefined")
 
   }else{
     var circle = two.makeCircle(x,y,size);
-    var color = randomColor();
+    var color = "#" + tx.hash.substring(2,8)
 
     if(!muted)
     {
