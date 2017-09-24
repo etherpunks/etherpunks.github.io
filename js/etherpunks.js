@@ -435,12 +435,12 @@ $(document).ready(function(){
 
           plucky = new Tone.PluckSynth(
           {
-      			"resonance" :0.8,
+      			"resonance" :0.9,
             "envelope" : {
               "attack" : 0.1,
             	"decay" : 0.2,
-            	"sustain" : 0.3,
-            	"release" : 0.4,
+            	"sustain" : 0.8,
+            	"release" : 0.7,
       			},
             "volume" : -15
           }
