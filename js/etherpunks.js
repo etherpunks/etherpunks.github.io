@@ -144,7 +144,7 @@ if(typeof two != "undefined")
 //gasUsed
 //amount
 
-   var pitch = Math.max(40, 200 - size);
+   var pitch = Math.max(40, 500 - (size*3));
 
 
   if(tx.recipient == "0xa4ec8e283de9c77510cfedfa15719fb64b1cd9de")
@@ -465,7 +465,7 @@ $(document).ready(function(){
       });*/
 
       volumeslider.on('*', function(data) {
-        beep.volume.value = data.value*20 -50; 
+        beep.volume.value = data.value*20 -50;
       });
 
       attackslider.on('*', function(data) {
@@ -499,23 +499,23 @@ $(document).ready(function(){
       });
 
       attackslider.set({
-        value: 0.02,
+        value: 0.1,
       }, true);
       decayslider.set({
-        value: 0.2,
+        value: 0.1,
       }, true);
       sustainslider.set({
-        value: .5,
+        value: .05,
       }, true);
       releaseslider.set({
         value: 0.4,
       }, true);
 
       filterfreqslider.set({
-        value: .5,
+        value: .2,
       }, true);
       filterqslider.set({
-        value: 0.2,
+        value: 0.5,
       }, true);
 
     }
