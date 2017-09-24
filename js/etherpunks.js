@@ -138,7 +138,7 @@ if(typeof two != "undefined")
      var hash_beginning_value = parseInt(hash_beginning, 16);
 
 
-  var x = hash_beginning_value % two.width;
+  var x = ((hash_beginning_value % 5000)/5000) * two.width;
   var y = 10;
   var size = 4 +  Math.sqrt(tx.amount / 100000000000000000);
 
