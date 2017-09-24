@@ -164,10 +164,10 @@ if(typeof two != "undefined")
 
     if(!muted)
     {
-        //beep.triggerRelease();
-        //beep.triggerAttackRelease(pitch, 4);
-      plucky.triggerRelease();
-      plucky.triggerAttackRelease(pitch, 4);
+        beep.triggerRelease();
+        beep.triggerAttackRelease(pitch, 2);
+    //  plucky.triggerRelease();
+    //  plucky.triggerAttackRelease(pitch, 4);
 
           if(  (new Date().getMilliseconds()-timeOfLastSound) > timeBetweenSounds)
           {
@@ -318,7 +318,7 @@ $(document).ready(function(){
 			"harmonicity" : 1.005,
 			"volume" : 5,
 			"voice0" : {
-				"volume" : -2,
+				"volume" : -10,
 				"oscillator" : {
 					"type" : "sawtooth"
 				},
@@ -330,7 +330,7 @@ $(document).ready(function(){
 				"envelope" : {
 					"attack" : 0.01,
 					"decay" : 0.25,
-					"sustain" : 0.4,
+					"sustain" : 0.2,
 					"release" : 1.2
 				},
 				"filterEnvelope" : {
@@ -343,7 +343,7 @@ $(document).ready(function(){
 				}
 			},
 			"voice1" : {
-				"volume" : -10,
+				"volume" : -20,
 				"oscillator" : {
 					"type" : "sawtooth"
 				},
@@ -377,7 +377,7 @@ $(document).ready(function(){
 
           plucky = new Tone.PluckSynth(
           {
-      			"resonance" :1,
+      			"resonance" :0.9,
             "envelope" : {
               "attack" : 0.1,
             	"decay" : 0.2,
@@ -447,7 +447,7 @@ $(document).ready(function(){
     // ********* Tone.js stuff
 
      beep = new Tone.MonoSynth().toMaster();
-    beep.volume.value = -20;
+    beep.volume.value = -40;
 
     // ********* NexusUI stuff
 
@@ -463,6 +463,10 @@ $(document).ready(function(){
           beep.triggerRelease();
         }
       });*/
+
+      volumeslider.on('*', function(data) {
+        beep.volume.value = data.value*20 -50; 
+      });
 
       attackslider.on('*', function(data) {
         beep.envelope.attack = data.value * 4;
