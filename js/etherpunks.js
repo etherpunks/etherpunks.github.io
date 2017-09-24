@@ -46,7 +46,7 @@ function pollTransactions()
 
               //ethTransactions[hash] = tx;
 
-              if(blockId >= latestBlockId && !ethHashesRead.includes(hash))
+              if( !ethHashesRead.includes(hash))
               {
                 ethHashesRead.push(hash)
 
@@ -167,7 +167,7 @@ if(typeof two != "undefined")
     {
 
           //play a middle 'C' for the duration of an 8th note
-          synth.triggerAttackRelease(pitch, "8n");
+          piano.triggerAttackRelease('A3', "8n");
     }
 
 
@@ -269,6 +269,10 @@ var circlegroup;
 var falling_height = 0;
 
 var synth;
+var bell;
+var drum;
+var bassPart;
+var synthL;
 
 $(document).ready(function(){
 
@@ -315,7 +319,155 @@ $(document).ready(function(){
 
 
     //create a synth and connect it to the master output (your speakers)
-      synth = new Tone.Synth({volume: -10}).toMaster();
+      synth = new Tone.DuoSynth({
+			"vibratoAmount" : 0.5,
+			"vibratoRate" : 5,
+			"portamento" : 0.1,
+			"harmonicity" : 1.005,
+			"volume" : 5,
+			"voice0" : {
+				"volume" : -2,
+				"oscillator" : {
+					"type" : "sawtooth"
+				},
+				"filter" : {
+					"Q" : 1,
+					"type" : "lowpass",
+					"rolloff" : -24
+				},
+				"envelope" : {
+					"attack" : 0.01,
+					"decay" : 0.25,
+					"sustain" : 0.4,
+					"release" : 1.2
+				},
+				"filterEnvelope" : {
+					"attack" : 0.001,
+					"decay" : 0.05,
+					"sustain" : 0.3,
+					"release" : 2,
+					"baseFrequency" : 100,
+					"octaves" : 4
+				}
+			},
+			"voice1" : {
+				"volume" : -10,
+				"oscillator" : {
+					"type" : "sawtooth"
+				},
+				"filter" : {
+					"Q" : 2,
+					"type" : "bandpass",
+					"rolloff" : -12
+				},
+				"envelope" : {
+					"attack" : 0.25,
+					"decay" : 4,
+					"sustain" : 0.1,
+					"release" : 0.8
+				},
+				"filterEnvelope" : {
+					"attack" : 0.05,
+					"decay" : 0.05,
+					"sustain" : 0.7,
+					"release" : 2,
+					"baseFrequency" : 5000,
+					"octaves" : -1.5
+				}
+			}
+		}).toMaster();
+
+
+    var merge = new Tone.Merge();
+		//a little reverb
+		var reverb = new Tone.Freeverb({
+			"roomSize" : 0.2,
+			"wet" : 0.3
+		});
+		merge.chain(reverb, Tone.Master);
+		//the synth settings
+		var synthSettings = {
+			"oscillator": {
+				"detune": 0,
+				"type": "custom",
+				"partials" : [2, 1, 2, 2],
+				"phase": 0,
+				"volume": 0
+			},
+			"envelope": {
+				"attack": 0.005,
+				"decay": 0.3,
+				"sustain": 0.2,
+				"release": 1,
+			},
+			"portamento": 0.01,
+			"volume": -10
+		};
+		//left and right synthesizers
+		  synthL = new Tone.Synth(synthSettings).connect(merge.left);
+		  synthR = new Tone.Synth(synthSettings).connect(merge.right);
+
+
+
+
+
+
+      piano = new Tone.Sampler({
+    			'A0' : 'A0.[mp3|ogg]',
+    			'C1' : 'C1.[mp3|ogg]',
+    			'D#1' : 'Ds1.[mp3|ogg]',
+    			'F#1' : 'Fs1.[mp3|ogg]',
+    			'A1' : 'A1.[mp3|ogg]',
+    			'C2' : 'C2.[mp3|ogg]',
+    			'D#2' : 'Ds2.[mp3|ogg]',
+    			'F#2' : 'Fs2.[mp3|ogg]',
+    			'A2' : 'A2.[mp3|ogg]',
+    			'C3' : 'C3.[mp3|ogg]',
+    			'D#3' : 'Ds3.[mp3|ogg]',
+    			'F#3' : 'Fs3.[mp3|ogg]',
+    			'A3' : 'A3.[mp3|ogg]',
+    			'C4' : 'C4.[mp3|ogg]',
+    			'D#4' : 'Ds4.[mp3|ogg]',
+    			'F#4' : 'Fs4.[mp3|ogg]',
+    			'A4' : 'A4.[mp3|ogg]',
+    			'C5' : 'C5.[mp3|ogg]',
+    			'D#5' : 'Ds5.[mp3|ogg]',
+    			'F#5' : 'Fs5.[mp3|ogg]',
+    			'A5' : 'A5.[mp3|ogg]',
+    			'C6' : 'C6.[mp3|ogg]',
+    			'D#6' : 'Ds6.[mp3|ogg]',
+    			'F#6' : 'Fs6.[mp3|ogg]',
+    			'A6' : 'A6.[mp3|ogg]',
+    			'C7' : 'C7.[mp3|ogg]',
+    			'D#7' : 'Ds7.[mp3|ogg]',
+    			'F#7' : 'Fs7.[mp3|ogg]',
+    			'A7' : 'A7.[mp3|ogg]',
+    			'C8' : 'C8.[mp3|ogg]'
+    		}, {
+    			'release' : 1,
+    			'baseUrl' : './audio/salamander/'
+    		}).toMaster();
+
+
+        bell = new Tone.MetalSynth({
+      			"harmonicity" : 12,
+      			"resonance" : 800,
+      			"modulationIndex" : 20,
+      			"envelope" : {
+      				"decay" : 0.4,
+      			},
+      			"volume" : -15
+      		}).toMaster();
+
+          drum = new Tone.MembraneSynth({
+    			"pitchDecay" : 0.008,
+    			"octaves" : 2,
+    			"envelope" : {
+    				"attack" : 0.0006,
+    				"decay" : 0.5,
+    				"sustain" : 0
+    			}
+    		}).toMaster();
 
 
       var synthA = new Tone.Synth({
