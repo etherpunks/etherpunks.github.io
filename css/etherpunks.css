@@ -3,6 +3,16 @@ body{
 }
 
 
+  .mute-button
+  {
+    position:absolute;
+    top:5px;
+    left:5px;
+    padding:2px;
+    font-size:32px;
+    z-index: 1000;
+  }
+
 
 
   .mobile-title

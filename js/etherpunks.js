@@ -11,7 +11,7 @@ let latestBlockId = 0;
 let number_of_tx_added_this_poll = 0;
 let tx_offset = 0;
 
-
+var muted = false;
 var two;
 
 
@@ -146,13 +146,23 @@ if(typeof two != "undefined")
   {
     var circle = two.makeStar(x,y,size*2,size*4,5);
     var color = "#000";
+    if(!muted)
+    {
+        sfx.coin()
+    }
+
   }else{
     var circle = two.makeCircle(x,y,size);
     var color = randomColor();
+
+    if(!muted)
+    {
+        sfx.tiny()
+    }
+
+
   }
 
-
-  sfx.simple()
 
 
   circle.fill = color;
@@ -231,6 +241,20 @@ function clickedTxWithHash(hash)
 
 
 
+function toggleMute()
+{
+  if(muted)
+  {
+    $(".mute-icon").removeClass("fa-volume-off");
+    $(".mute-icon").addClass("fa-volume-up");
+    muted = false;
+  }else {
+      $(".mute-icon").removeClass("fa-volume-up");
+      $(".mute-icon").addClass("fa-volume-off");
+    muted = true;
+  }
+}
+
 var circlegroup;
 var falling_height = 0;
 
@@ -282,8 +306,8 @@ $(document).ready(function(){
 
 
 
-    var library = {"simple":{"Frequency":{"Start":937.3952196773203,"Min":246.35718983774473,"Slide":-0.8024567088280853},"Generator":{"Func":"sine","A":0.4821820657155865,"ASlide":0.08279595272417106},"Volume":{"Sustain":0.26649676262701294,"Decay":0.2266347238393018}}};
-    sfx = jsfx.Sounds(library);
+    var library = {"simple":{"Frequency":{"Start":937.3952196773203,"Min":246.35718983774473,"Slide":-0.8024567088280853},"Generator":{"Func":"sine","A":0.4821820657155865,"ASlide":0.08279595272417106},"Volume":{"Sustain":0.26649676262701294,"Decay":0.2266347238393018}},"coin":{"Frequency":{"Start":1362.0204816493952,"ChangeSpeed":0.14504706473599208,"ChangeAmount":10.654721077993328},"Volume":{"Sustain":0.0191136253611655,"Decay":0.31579941914330545,"Punch":0.4551836224273207}},"tiny":{"Frequency":{"Start":1482.158618837902,"Min":700.3125673232661,"Slide":-0.9337395871742468},"Generator":{"Func":"sine","A":0.023075868363643726,"ASlide":0.09614367718647561},"Phaser":{"Offset":0.14958106085836845,"Sweep":0.1613417939353254},"Volume":{"Sustain":0.18283469595997254,"Decay":0.2269495180354423}}};
+      sfx = jsfx.Sounds(library);
 
 
 })
