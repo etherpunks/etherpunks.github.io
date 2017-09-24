@@ -152,6 +152,8 @@ if(typeof two != "undefined")
   }
 
 
+  sfx.simple()
+
 
   circle.fill = color;
   circle.data = tx.hash;
@@ -162,7 +164,7 @@ if(typeof two != "undefined")
 
   while(circles.length >= 500)
   {
-      var removed_circle = circles.pop(circle)
+      var removed_circle = circles.shift(circle)
       two.remove(removed_circle);
   }
 
@@ -223,7 +225,7 @@ function clickedTxWithHash(hash)
   $(".selectedTxInfoLink").attr("href","http://etherscan.io/tx/"+hash)
 
 
- 
+
 
 }
 
@@ -231,6 +233,10 @@ function clickedTxWithHash(hash)
 
 var circlegroup;
 var falling_height = 0;
+
+var sfx ;
+
+
 $(document).ready(function(){
 
   pollTransactions()
@@ -276,11 +282,8 @@ $(document).ready(function(){
 
 
 
-    var library = {
-    	"select": {"Volume":{"Sustain":0.1,"Decay":0.15,"Punch":0.55}},
-    	"long": {"Volume":{"Sustain":0.1,"Decay":0.5,"Punch":1}}
-    };
-    var sfx = jsfx.Sounds(library);
-    sfx.long()
+    var library = {"simple":{"Frequency":{"Start":937.3952196773203,"Min":246.35718983774473,"Slide":-0.8024567088280853},"Generator":{"Func":"sine","A":0.4821820657155865,"ASlide":0.08279595272417106},"Volume":{"Sustain":0.26649676262701294,"Decay":0.2266347238393018}}};
+    sfx = jsfx.Sounds(library);
+
 
 })
