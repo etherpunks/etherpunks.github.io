@@ -22,11 +22,68 @@ function pollTransactions()
 {
 
   $.ajax({
-    url: "https://etherchain.org/api/txs/"+tx_offset+"/100"
-  })
-    .done(function( response ) {
+    url: "https://etherchain.org/api/txs/"+tx_offset+"/100",
+    success: function(response){
 
-      tx_offset++;
+
+      tx_offset+=100;
+      number_of_tx_added_this_poll = 0;
+
+
+      console.log('read ')
+
+          let tx_list = response.data;
+
+            for (var i=0; i < tx_list.length; i++ )
+            {
+              let tx = response.data[i];
+
+              let hash = tx.hash;
+
+              let blockId = tx.block_id;
+
+              if(latestBlockId < blockId)
+              {
+                latestBlockId = blockId;
+              }
+
+              //ethTransactions[hash] = tx;
+
+              if( !ethHashesRead.includes(hash))
+              {
+                ethHashesRead.push(hash)
+
+                ethTransactions.push(tx)
+
+                  //console.log(hash)
+
+                  number_of_tx_added_this_poll++;
+              }
+
+            }
+
+
+            //if no transactions from this block were found then reset our offset
+            if(number_of_tx_added_this_poll  == 0)
+            {
+              //reset tx_offset
+              tx_offset = 0;
+
+            }
+
+            $(".debug-info").html(tx_offset)
+
+
+
+      },
+  error: function(XMLHttpRequest, textStatus, errorThrown) {
+    tx_offset = 0;
+    console.log('api failed -- resetting')
+  }
+  })
+  /*.success(function( response ) {
+
+      tx_offset+=100;
       number_of_tx_added_this_poll = 0;
 
 
@@ -80,9 +137,13 @@ function pollTransactions()
 
 
 
-    });
+    }).error(function( XMLHttpRequest, textStatus, errorThrown ) {
+        //reset tx_offset
+        tx_offset = 0;
+        console.log('api failed -- resetting')
+      });
 
-
+*/
 
 
 
