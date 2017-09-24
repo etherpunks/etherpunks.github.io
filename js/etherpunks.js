@@ -49,7 +49,7 @@ function pollTransactions()
 
               //ethTransactions[hash] = tx;
 
-              if( !ethHashesRead.includes(hash))
+              if( blockId >= (latestBlockId - 5) && !ethHashesRead.includes(hash))
               {
                 ethHashesRead.push(hash)
 
