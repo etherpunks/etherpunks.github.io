@@ -133,7 +133,12 @@ if(typeof two != "undefined")
 
   console.log(tx)
 
-  var x = Math.random() * two.width;
+
+     var hash_beginning = tx.hash.substring(2,8)
+     var hash_beginning_value = parseInt(hash_beginning, 16);
+
+
+  var x = hash_beginning_value % two.width;
   var y = 10;
   var size = 4 +  Math.sqrt(tx.amount / 100000000000000000);
 
@@ -156,7 +161,7 @@ if(typeof two != "undefined")
 
   }else{
     var circle = two.makeCircle(x,y,size);
-    var color = "#" + tx.hash.substring(2,8)
+    var color = "#" + hash_beginning;
 
     if(!muted)
     {
